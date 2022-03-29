@@ -441,6 +441,7 @@ impl Build {
                     "-DNO_SYSLOG",
                     // WASI doesn't support (p)threads. Disabling preemptively.
                     "no-threads",
+                    "-DHAVE_FORK=0",
                     // WASI/WASM aren't really friends with ASM, so we disable it as well.
                     "no-asm",
                     // Disables the AFALG engine (AFALG-ENGine)
@@ -448,6 +449,12 @@ impl Build {
                     // it makes sense that we can't use it.
                     "no-afalgeng",
                     "-DOPENSSL_NO_AFALGENG=1",
+                    // Prevent calls to getuid()
+                    "-DOPENSSL_SYS_NETWARE",
+                    "-DSIG_DFL=0",
+                    "-DSIG_IGN=0",
+                    "-DOPENSSL_NO_SPEED=1",
+                    "-no-dso",
                     // wasm lacks signal support; to enable minimal signal emulation, compile with
                     // -D_WASI_EMULATED_SIGNAL and link with -lwasi-emulated-signal
                     // The link argument is output in the `Artifacts::print_cargo_metadata` method
