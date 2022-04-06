@@ -507,8 +507,13 @@ impl Build {
 
         fs::remove_dir_all(&inner_dir).unwrap();
 
+        let lib_folder = match os {
+            "linux-x32" => "libx32",
+            _ => "lib",
+        };
+
         Artifacts {
-            lib_dir: install_dir.join("lib"),
+            lib_dir: install_dir.join(lib_folder),
             bin_dir: install_dir.join("bin"),
             include_dir: install_dir.join("include"),
             libs: libs,
